@@ -1,5 +1,9 @@
 # DTC Route Information: Online information about the bus routes and their frequency and fares
 # SOURCE OF INFORMATION FROM dtc, dELHI
+# You can also use the DTC API to get the bus routes and fares, However, you need to register and get an API key.
+# Please note that this is a very basic example, and you will likely need to add more code to handle errors, pagination, 
+# and other features that are specific to your project.
+
 
 
 import requests
