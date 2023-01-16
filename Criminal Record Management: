@@ -1,0 +1,49 @@
+# Criminal Record Management System (CRMS) is a software application that is used to store and retrieve criminal records. 
+#The system is designed to be used by jailers, police officers, and CBI officers. 
+#The system allows users to enter new criminal records, search for existing records, and update or delete records.   
+#  This example uses SQLite as the database and stores criminal records in a table called "CRIMINALS". 
+#  The CRMS class has methods for adding, searching, updating and deleting criminal records. 
+#  The "if name == 'main':" block at the end of the code is used to test the CRMS class.
+
+# Here is an example of a simple CRMS implemented in Python:
+
+
+import sqlite3
+
+class CRMS:
+    def __init__(self):
+        self.conn = sqlite3.connect('crms.db')
+        self.conn.execute('''CREATE TABLE IF NOT EXISTS CRIMINALS
+                            (ID INT PRIMARY KEY NOT NULL,
+                            NAME TEXT NOT NULL,
+                            AGE INT NOT NULL,
+                            ADDRESS CHAR(50),
+                            CRIME TEXT NOT NULL);''')
+
+    def add_criminal_record(self, id, name, age, address, crime):
+        self.conn.execute("INSERT INTO CRIMINALS (ID, NAME, AGE, ADDRESS, CRIME) VALUES (?,?,?,?,?)", (id, name, age, address, crime))
+        self.conn.commit()
+
+    def search_criminal_record(self, id):
+        cursor = self.conn.execute("SELECT * from CRIMINALS where ID=?", (id,))
+        return cursor.fetchone()
+
+    def update_criminal_record(self, id, name, age, address, crime):
+        self.conn.execute("UPDATE CRIMINALS set NAME=?, AGE=?, ADDRESS=?, CRIME=? where ID=?", (name, age, address, crime, id))
+        self.conn.commit()
+
+    def delete_criminal_record(self, id):
+        self.conn.execute("DELETE from CRIMINALS where ID=?", (id,))
+        self.conn.commit()
+        
+
+if __name__ == '__main__':
+    crms = CRMS()
+    crms.add_criminal_record(1, 'John Doe', 25, '123 Main St', 'Burglary')
+    crms.add_criminal_record(2, 'Jane Smith', 32, '456 Park Ave', 'Armed Robbery')
+    print(crms.search_criminal_record(1))
+    crms.update_criminal_record(1, 'John Smith', 25, '123 Main St', 'Burglary')
+    print(crms.search_criminal_record(1))
+    crms.delete_criminal_record(1)
+    print(crms.search_criminal_record(1))
+    
