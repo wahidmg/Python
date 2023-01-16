@@ -1,1 +1,24 @@
+# DTC Route Information: Online information about the bus routes and their frequency and fares
+# SOURCE OF INFORMATION FROM dtc, dELHI
 
+
+import requests
+from bs4 import BeautifulSoup
+
+# define the URL of the DTC website
+url = "https://delhi.gov.in/wps/wcm/connect/doit_transport/Transport/Home/Bus+Services/Bus+Timings"
+
+# make a GET request to the website
+response = requests.get(url)
+
+# parse the HTML content of the website using BeautifulSoup
+soup = BeautifulSoup(response.text, 'html.parser')
+
+# find all the elements with the class "bus-timing-table"
+bus_timings_table = soup.find_all(class_='bus-timing-table')
+
+# loop through each table and print the bus route and frequency
+for table in bus_timings_table:
+    bus_route = table.find(class_='bus-route').text
+    bus_frequency = table.find(class_='bus-frequency').text
+    print(f'Bus route: {bus_route}\nFrequency: {bus_frequency}\n')
